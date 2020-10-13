@@ -1,8 +1,9 @@
 import { User } from './models/User'
 
-const user = new User({ name: 'My Name', age: 23 })
+const user = new User({ name: 'New Record', age: 23 })
 
-user.set({ age: 10 })
+user.save()
 
-console.log(user.get('name'))
-console.log(user.get('age'))
+setTimeout(() => {
+  console.log(user)
+}, 4000)

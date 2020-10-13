@@ -1,0 +1,23 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "web framework built with typescript",
+  "main": "index.js",
+  "scripts": {
+    "start:db": "json-server -w db.json",
+    "start:parcel": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giangle0411/typescript-web-framework.git"
+  },
+  "author": "Giang Le",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/giangle0411/typescript-web-framework/issues"
+  },
+  "homepage": "https://github.com/giangle0411/typescript-web-framework#readme",
+  "dependencies": {
+    "axios": "^0.20.0"
+  }
+}
