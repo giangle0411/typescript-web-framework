@@ -1,13 +1,24 @@
-import { User } from '../models/User'
+import { Model } from '../models/Model'
 
-export abstract class View {
-  constructor(public parent: Element, public model: User) {
+// Model is also generic class that require Type T extends HasId (Model.ts)
+// We need to give Model the type K
+export abstract class View<T extends Model<K>, K> {
+  regions: { [key: string]: Element } = {}
+
+  constructor(public parent: Element, public model: T) {
     this.bindModel()
   }
 
-  abstract eventsMap(): { [key: string]: () => void }
-
   abstract template(): string
+
+  // for nested views
+  regionsMap(): { [key: string]: string } {
+    return {}
+  }
+
+  eventsMap(): { [key: string]: () => void } {
+    return {}
+  }
 
   bindModel(): void {
     this.model.on('change', () => {
@@ -27,6 +38,20 @@ export abstract class View {
     }
   }
 
+  mapRegions(fragment: DocumentFragment): void {
+    const regionsMap = this.regionsMap()
+
+    for (let key in regionsMap) {
+      const selector = regionsMap[key]
+      const element = fragment.querySelector(selector)
+      if (element) {
+        this.regions[key] = element
+      }
+    }
+  }
+
+  onRender(): void {}
+
   render(): void {
     this.parent.innerHTML = ''
 
@@ -34,6 +59,9 @@ export abstract class View {
     templateElement.innerHTML = this.template()
 
     this.bindEvents(templateElement.content)
+    this.mapRegions(templateElement.content)
+
+    this.onRender()
 
     this.parent.append(templateElement.content)
   }
